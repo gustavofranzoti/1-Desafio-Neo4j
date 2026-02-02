@@ -2,6 +2,6 @@
 
 ![Modelo Arrow](Modelo_Arrow.png)
 
-##Arquivo com código em cypher
+##Arquivo com código usado no Neo4j
 
 ![Codigo Cypher](Codigo_cypher.txt)
