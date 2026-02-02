@@ -1,0 +1,136 @@
+
+// CONSTRAINTS
+
+CREATE CONSTRAINT user_id IF NOT EXISTS
+FOR (u:User) REQUIRE u.id IS UNIQUE;
+
+CREATE CONSTRAINT movie_id IF NOT EXISTS
+FOR (m:Movie) REQUIRE m.id IS UNIQUE;
+
+CREATE CONSTRAINT series_id IF NOT EXISTS
+FOR (s:Series) REQUIRE s.id IS UNIQUE;
+
+CREATE CONSTRAINT actor_id IF NOT EXISTS
+FOR (a:Actor) REQUIRE a.id IS UNIQUE;
+
+CREATE CONSTRAINT director_id IF NOT EXISTS
+FOR (d:Director) REQUIRE d.id IS UNIQUE;
+
+CREATE CONSTRAINT genre_name IF NOT EXISTS
+FOR (g:Genre) REQUIRE g.name IS UNIQUE;
+
+
+// NÓS
+
+
+// USERS
+CREATE
+(:User {id: 1, name: "Ana Silva"}),
+(:User {id: 2, name: "Bruno Costa"}),
+(:User {id: 3, name: "Carla Mendes"}),
+(:User {id: 4, name: "Daniel Rocha"}),
+(:User {id: 5, name: "Eduarda Lima"}),
+(:User {id: 6, name: "Felipe Azevedo"}),
+(:User {id: 7, name: "Gabriela Torres"}),
+(:User {id: 8, name: "Henrique Nogueira"}),
+(:User {id: 9, name: "Isabela Freitas"}),
+(:User {id: 10, name: "João Ribeiro"});
+
+// MOVIES
+CREATE
+(:Movie {id: 1, title: "Inception"}),
+(:Movie {id: 2, title: "Interstellar"}),
+(:Movie {id: 3, title: "The Dark Knight"}),
+(:Movie {id: 4, title: "Pulp Fiction"}),
+(:Movie {id: 5, title: "Fight Club"}),
+(:Movie {id: 6, title: "Forrest Gump"}),
+(:Movie {id: 7, title: "The Matrix"}),
+(:Movie {id: 8, title: "Gladiator"}),
+(:Movie {id: 9, title: "The Godfather"}),
+(:Movie {id: 10, title: "Parasite"});
+
+// SERIES
+CREATE
+(:Series {id: 1, title: "Breaking Bad"}),
+(:Series {id: 2, title: "Stranger Things"}),
+(:Series {id: 3, title: "Game of Thrones"}),
+(:Series {id: 4, title: "The Office"}),
+(:Series {id: 5, title: "Friends"}),
+(:Series {id: 6, title: "The Boys"}),
+(:Series {id: 7, title: "Dark"}),
+(:Series {id: 8, title: "Narcos"}),
+(:Series {id: 9, title: "House of Cards"}),
+(:Series {id: 10, title: "The Crown"});
+
+// ACTORS
+CREATE
+(:Actor {id: 1, name: "Leonardo DiCaprio"}),
+(:Actor {id: 2, name: "Brad Pitt"}),
+(:Actor {id: 3, name: "Morgan Freeman"}),
+(:Actor {id: 4, name: "Scarlett Johansson"}),
+(:Actor {id: 5, name: "Christian Bale"}),
+(:Actor {id: 6, name: "Keanu Reeves"}),
+(:Actor {id: 7, name: "Al Pacino"}),
+(:Actor {id: 8, name: "Robert De Niro"}),
+(:Actor {id: 9, name: "Joaquin Phoenix"}),
+(:Actor {id: 10, name: "Matthew McConaughey"});
+
+// DIRECTORS
+CREATE
+(:Director {id: 1, name: "Christopher Nolan"}),
+(:Director {id: 2, name: "Quentin Tarantino"}),
+(:Director {id: 3, name: "David Fincher"}),
+(:Director {id: 4, name: "Steven Spielberg"}),
+(:Director {id: 5, name: "Martin Scorsese"}),
+(:Director {id: 6, name: "Ridley Scott"}),
+(:Director {id: 7, name: "Francis Ford Coppola"}),
+(:Director {id: 8, name: "Bong Joon-ho"}),
+(:Director {id: 9, name: "James Cameron"}),
+(:Director {id: 10, name: "Denis Villeneuve"});
+
+// GENRES
+CREATE
+(:Genre {name: "Drama"}),
+(:Genre {name: "Action"}),
+(:Genre {name: "Sci-Fi"}),
+(:Genre {name: "Thriller"}),
+(:Genre {name: "Comedy"}),
+(:Genre {name: "Crime"}),
+(:Genre {name: "Adventure"}),
+(:Genre {name: "Fantasy"}),
+(:Genre {name: "Mystery"}),
+(:Genre {name: "Romance"});
+
+
+// RELACIONAMENTOS
+
+
+// DIRECTED
+MATCH (d:Director {name: "Christopher Nolan"}), (m:Movie {title: "Inception"})
+MERGE (d)-[:DIRECTED]->(m);
+
+MATCH (d:Director {name: "Christopher Nolan"}), (s:Series {title: "Breaking Bad"})
+MERGE (d)-[:DIRECTED]->(s);
+
+// ACTED_IN
+MATCH (a:Actor {name: "Leonardo DiCaprio"}), (m:Movie {title: "Inception"})
+MERGE (a)-[:ACTED_IN]->(m);
+
+MATCH (a:Actor {name: "Al Pacino"}), (m:Movie {title: "The Godfather"})
+MERGE (a)-[:ACTED_IN]->(m);
+
+// WATCHED
+MATCH (u:User {name: "Ana Silva"}), (m:Movie {title: "Inception"})
+MERGE (u)-[:WATCHED {rating: 5}]->(m);
+
+MATCH (u:User {name: "Ana Silva"}), (s:Series {title: "Breaking Bad"})
+MERGE (u)-[:WATCHED {rating: 5}]->(s);
+
+// IN_GENRE
+MATCH (m:Movie {title: "Inception"}), (g:Genre {name: "Sci-Fi"})
+MERGE (m)-[:IN_GENRE]->(g);
+
+MATCH (s:Series {title: "Breaking Bad"}), (g:Genre {name: "Drama"})
+MERGE (s)-[:IN_GENRE]->(g);
+
+
